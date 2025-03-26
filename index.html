@@ -9,6 +9,8 @@
     <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js';</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
 
 </head>
 <body>  
@@ -35,7 +37,7 @@
      <section class="card report-card">
         <h3>Project Reports</h3>
         <button class="add-btn" onclick="document.getElementById('fileInput').click()">Add Project</button>
-        <input type="file" id="fileInput" style="display: none;" accept=".pdf,.docx" onchange="addProject()">
+        <input type="file" id="fileInput" style="display: none;" accept=".pdf,.docx,.html,.js,.xml,.txt" onchange="addProject()">
         <div class="dropdown-container">
             <button class="dropdown-btn">Choose Encryption Method ▼</button>
             <ul class="dropdown-menu">
