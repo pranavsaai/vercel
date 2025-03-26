@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     const user = await getUser(username);
                     if (user && user.password === btoa(password)) {
                         localStorage.setItem("loggedInUser", username);
-                        window.location.href = "student_projects.html"; // Matches your original redirect
+                        window.location.href = "index.html"; // Matches your original redirect
                     } else {
                         const loginError = document.getElementById("loginError");
                         if (loginError) {
