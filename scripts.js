@@ -694,14 +694,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     function showPasswordPrompt(fileData, fileType, uploaderPassword) {
         const displayContent = fileData && fileData.trim() !== "" ? fileData : "No document uploaded";
-
+    
         // Debug: Log the fileData to ensure it's correct
-        console.log('File Data in showPasswordPrompt:', displayContent);
+        console.log('File Data in showPasswordPrompt:', displayContent.substring(0, 50) + '...');
         console.log('File Type:', fileType);
         console.log('Uploader Password:', uploaderPassword);
-
+    
         // Check if the fileData is a valid base64 data URL
-        if (!displayContent.startsWith('data:application/pdf;base64,')) {
+        if (!displayContent.startsWith('data:')) {
             docPreview.srcdoc = `
                 <html>
                 <body style="font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5;">
@@ -711,12 +711,15 @@ document.addEventListener("DOMContentLoaded", function () {
             `;
             return;
         }
-
+    
         docPreview.srcdoc = `
             <html>
             <head>
                 <title>View Report</title>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+                <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
                 <script>
                     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js';
                 </script>
@@ -784,10 +787,23 @@ document.addEventListener("DOMContentLoaded", function () {
                         width: 100%;
                         height: 100%;
                         overflow: auto;
+                        padding: 20px;
                     }
                     canvas {
                         width: 100%;
                         border: 1px solid #ccc;
+                        margin-bottom: 10px;
+                    }
+                    #docxContent, #codeContent {
+                        background: #fff;
+                        padding: 20px;
+                        border: 1px solid #ccc;
+                        border-radius: 5px;
+                        white-space: pre-wrap;
+                        word-wrap: break-word;
+                        font-family: 'Courier New', Courier, monospace;
+                        font-size: 14px;
+                        color: #333;
                     }
                 </style>
             </head>
@@ -799,7 +815,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     <p id="errorMessage" class="error-message">❌ Incorrect password!</p>
                 </div>
                 <div id="contentDisplay" class="content-display">
-                    <canvas id="pdfCanvas"></canvas>
+                    <div id="pdfContent"></div>
+                    <div id="docxContent"></div>
+                    <div id="codeContent"></div>
                 </div>
                 <script>
                     async function verifyPassword() {
@@ -808,61 +826,90 @@ document.addEventListener("DOMContentLoaded", function () {
                         const errorMessage = document.getElementById('errorMessage');
                         const contentDisplay = document.getElementById('contentDisplay');
                         const passwordPrompt = document.getElementById('passwordPrompt');
-
+    
                         if (enteredPassword === decodedUploaderPassword) {
                             passwordPrompt.style.display = 'none';
                             contentDisplay.style.display = 'block';
-                            renderPDF('${displayContent}');
+                            renderContent('${displayContent}', '${fileType}');
                         } else {
                             errorMessage.style.display = 'block';
                         }
                     }
-
-                    async function renderPDF(base64Data) {
+    
+                    async function renderContent(base64Data, fileType) {
                         try {
-                            if (!base64Data || !base64Data.startsWith('data:application/pdf;base64,')) {
+                            if (!base64Data || !base64Data.startsWith('data:')) {
                                 throw new Error('Invalid base64 data URL');
                             }
-
+    
                             const base64String = base64Data.split(',')[1];
                             if (!base64String) {
                                 throw new Error('Base64 string is empty after splitting');
                             }
-
+    
                             const binaryString = atob(base64String);
                             const len = binaryString.length;
                             const bytes = new Uint8Array(len);
                             for (let i = 0; i < len; i++) {
                                 bytes[i] = binaryString.charCodeAt(i);
                             }
-
-                            const pdf = await pdfjsLib.getDocument({ data: bytes }).promise;
-                            const canvas = document.getElementById('pdfCanvas');
-                            const context = canvas.getContext('2d');
-
-                            for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-                                const page = await pdf.getPage(pageNum);
-                                const viewport = page.getViewport({ scale: 1.0 });
-
-                                const pageCanvas = document.createElement('canvas');
-                                pageCanvas.width = viewport.width;
-                                pageCanvas.height = viewport.height;
-                                pageCanvas.style.border = '1px solid #ccc';
-                                pageCanvas.style.marginBottom = '10px';
-                                document.getElementById('contentDisplay').appendChild(pageCanvas);
-
-                                const pageContext = pageCanvas.getContext('2d');
-                                const renderContext = {
-                                    canvasContext: pageContext,
-                                    viewport: viewport
-                                };
-                                await page.render(renderContext).promise;
+    
+                            if (fileType === 'application/pdf') {
+                                await renderPDF(bytes);
+                            } else if (fileType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                                await renderDOCX(bytes);
+                            } else if (['text/html', 'text/javascript', 'application/xml', 'text/xml', 'text/plain'].includes(fileType)) {
+                                renderCode(binaryString);
+                            } else {
+                                document.getElementById('contentDisplay').innerHTML = '<p>Unsupported file type</p>';
                             }
-
-                            canvas.remove();
                         } catch (error) {
-                            console.error('Error rendering PDF:', error);
-                            document.getElementById('contentDisplay').innerHTML = '<p>Error loading PDF: ' + error.message + '</p>';
+                            console.error('Error rendering content:', error);
+                            document.getElementById('contentDisplay').innerHTML = '<p>Error loading content: ' + error.message + '</p>';
+                        }
+                    }
+    
+                    async function renderPDF(data) {
+                        const pdf = await pdfjsLib.getDocument({ data: data }).promise;
+                        const pdfContent = document.getElementById('pdfContent');
+    
+                        for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                            const page = await pdf.getPage(pageNum);
+                            const viewport = page.getViewport({ scale: 1.5 });
+    
+                            const canvas = document.createElement('canvas');
+                            canvas.width = viewport.width;
+                            canvas.height = viewport.height;
+                            pdfContent.appendChild(canvas);
+    
+                            const context = canvas.getContext('2d');
+                            const renderContext = {
+                                canvasContext: context,
+                                viewport: viewport
+                            };
+                            await page.render(renderContext).promise;
+                        }
+                    }
+    
+                    async function renderDOCX(data) {
+                        const result = await mammoth.extractRawText({ arrayBuffer: data });
+                        const docxContent = document.getElementById('docxContent');
+                        docxContent.textContent = result.value || 'No content extracted';
+                    }
+    
+                    function renderCode(text) {
+                        const codeContent = document.getElementById('codeContent');
+                        codeContent.innerHTML = \`<pre><code class="language-\${getLanguage('${fileType}')}">\${text.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre>\`;
+                        Prism.highlightAll();
+                    }
+    
+                    function getLanguage(fileType) {
+                        switch (fileType) {
+                            case 'text/html': return 'html';
+                            case 'text/javascript': return 'javascript';
+                            case 'application/xml':
+                            case 'text/xml': return 'xml';
+                            default: return 'plaintext';
                         }
                     }
                 </script>
@@ -870,7 +917,6 @@ document.addEventListener("DOMContentLoaded", function () {
             </html>
         `;
     }
-
     function encryptTitle(title, method) {
         console.log(`Encrypting title "${title}" with method: ${method}`);
         let encryptedTitle;
@@ -903,19 +949,19 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("⚠ You must be logged in to upload a project.");
             return;
         }
-
+    
         const file = fileInput.files[0];
         if (!file) {
             alert("⚠ Please select a file before choosing an encryption method!");
             return;
         }
-
+    
         const user = await getUser(loggedInUser);
         if (!user?.password) {
             alert("⚠ Something went wrong. Please log in again.");
             return;
         }
-
+    
         try {
             // Read the file as a base64 string
             const base64Promise = new Promise((resolve, reject) => {
@@ -924,32 +970,41 @@ document.addEventListener("DOMContentLoaded", function () {
                 reader.onerror = () => reject(new Error("Failed to read file as base64"));
                 reader.readAsDataURL(file);
             });
-
-            // Read the file as an ArrayBuffer for content extraction
-            const arrayBufferPromise = new Promise((resolve, reject) => {
+    
+            // Read the file as text or ArrayBuffer based on type
+            const contentPromise = new Promise((resolve, reject) => {
                 const reader = new FileReader();
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = () => reject(new Error("Failed to read file as ArrayBuffer"));
-                reader.readAsArrayBuffer(file);
+                if (['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'].includes(file.type)) {
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = () => reject(new Error("Failed to read file as ArrayBuffer"));
+                    reader.readAsArrayBuffer(file);
+                } else {
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = () => reject(new Error("Failed to read file as text"));
+                    reader.readAsText(file);
+                }
             });
-
+    
             // Wait for both promises to resolve
-            const [fileBase64, arrayBuffer] = await Promise.all([base64Promise, arrayBufferPromise]);
-
-            console.log('File Base64 in addProject:', fileBase64.substring(0, 50) + '...'); // Debug log
-
+            const [fileBase64, rawContent] = await Promise.all([base64Promise, contentPromise]);
+    
+            console.log('File Base64 in addProject:', fileBase64.substring(0, 50) + '...');
+    
             const encryptedTitle = encryptTitle(file.name, encryptionMethod);
             const projectID = await generateProjectID(loggedInUser);
             let fullContent = "";
+    
             if (file.type === "application/pdf") {
-                fullContent = await extractPdfContent(arrayBuffer);
+                fullContent = await extractPdfContent(rawContent);
             } else if (file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
-                fullContent = await extractDocxContent(arrayBuffer);
+                fullContent = await extractDocxContent(rawContent);
+            } else if (['text/html', 'text/javascript', 'application/xml', 'text/xml', 'text/plain'].includes(file.type)) {
+                fullContent = rawContent; // Plain text content for code files
             } else {
-                alert("⚠ Unsupported file type. Please upload a PDF or DOCX file.");
+                alert("⚠ Unsupported file type. Please upload a PDF, DOCX, HTML, JS, XML, or TXT file.");
                 return;
             }
-
+    
             const newProject = {
                 projectID: projectID,
                 date: new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }),
@@ -961,7 +1016,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 encryptionMethod: encryptionMethod,
                 fileType: file.type
             };
-
+    
             await saveProject(newProject);
             renderProjects();
             alert("✅ Project added successfully!");
@@ -970,7 +1025,6 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("❌ Failed to add project: " + error.message);
         }
     }
-
     async function extractPdfContent(data) {
         try {
             const pdfData = new Uint8Array(data);
