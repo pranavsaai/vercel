@@ -1,0 +1,544 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(120deg, #1e272e 0%, #2f3542 100%);
+    color: #dfe6e9;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    padding: 20px 0;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 30%, rgba(46, 204, 113, 0.1) 0%, transparent 70%);
+    animation: pulse 15s infinite;
+    z-index: -1;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.2); opacity: 0.8; }
+}
+
+.card {
+    width: 94%;
+    max-width: 1300px;
+    margin: 40px auto;
+    padding: 35px;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Ultra Smooth Cards */
+.card {
+    width: 94%;
+    max-width: 1300px;
+    margin: 40px auto;
+    padding: 35px;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(46, 204, 113, 0.2), rgba(52, 152, 219, 0.2));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+    border-radius: 25px; /* Match the card's border-radius */
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+.card:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), 0 0 20px rgba(46, 204, 113, 0.2);
+}
+.report-card {
+    overflow-x: auto; 
+}
+/* Profile Card */
+.profile-card {
+    background: linear-gradient(135deg, #2ecc71 0%, #3498db 100%);
+    padding: 45px;
+    color: white;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+.profile-card img {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    border: 5px solid rgba(255, 255, 255, 0.95);
+    transition: all 0.4s ease;
+    margin-bottom: 20px;
+}
+
+.profile-card img:hover {
+    transform: scale(1.15) rotate(5deg);
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
+}
+
+.profile-card h2 {
+    margin: 15px 0;
+}
+
+/* Info Card */
+.info-card {
+    background: linear-gradient(135deg, #34495e, #2c3e50);
+    text-align: center;
+    padding: 40px;
+}
+
+.info-card img {
+    width: 80px;
+    height: 80px;
+    border-radius: 15px;
+    margin: 20px auto;
+    transition: all 0.4s ease;
+}
+
+.info-card img:hover {
+    transform: scale(1.1);
+}
+
+.info-card p {
+    margin-top: 15px;
+}
+
+/* Buttons */
+.add-btn, .clear-btn, .delete-btn, .view-btn {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 50px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    background: linear-gradient(45deg, #00b894, #00cec9);
+    color: white;
+    margin: 10px 5px;
+}
+
+.clear-btn { background: linear-gradient(45deg, #e84393, #ff7675); }
+.delete-btn { background: linear-gradient(45deg, #e17055, #fab1a0); }
+.view-btn { background: linear-gradient(45deg, #0984e3, #74b9ff); }
+.view-content-btn, .view-encrypted-file-btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 50px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    background: linear-gradient(45deg, #f1c40f, #f39c12); /* Yellow-orange gradient */
+    color: white;
+    margin: 5px;
+}
+
+.view-content-btn:hover, .view-encrypted-file-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2), 0 0 15px rgba(241, 196, 15, 0.5);
+}
+.add-btn:hover, .clear-btn:hover, .delete-btn:hover, .view-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2), 0 0 15px currentColor;
+}
+
+/* Table */
+.report-card {
+    overflow-x: auto; 
+}
+
+.report-card table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 15px;
+    margin-top: 25px;
+    table-layout: auto; 
+    display: table;
+}
+
+.report-card thead,
+.report-card tbody {
+    display: table;
+    width: 100%;
+    table-layout: auto; 
+}
+
+.report-card th {
+    background: linear-gradient(45deg, #2d3436, #636e72);
+    padding: 18px 25px;
+    font-size: 14px;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #dfe6e9;
+}
+
+.report-card td {
+    padding: 18px 25px;
+    background: rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    font-size: 14px;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Tooltip for long project titles */
+.report-card td:nth-child(4) {
+    position: relative;
+}
+
+.report-card td:nth-child(4):hover::after {
+    content: attr(data-title);
+    position: absolute;
+    background: #333;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    z-index: 10;
+    white-space: normal;
+    left: 0;
+    top: -40px;
+}
+
+/* Ensure buttons in cells don’t wrap and have enough space */
+.report-card td button {
+    white-space: nowrap;
+    padding: 10px 15px;
+    font-size: 12px;
+    min-width: 120px; 
+    text-align: center;
+}
+
+/* Hover effect for table rows */
+.report-card tbody tr:hover {
+    transform: translateX(10px);
+    background: rgba(46, 204, 113, 0.15);
+    box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+}
+
+/* Buttons */
+.add-btn, .clear-btn, .delete-btn, .view-btn, .view-content-btn, .view-encrypted-file-btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 50px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    color: white;
+    margin: 5px;
+}
+
+.add-btn {
+    background: linear-gradient(45deg, #00b894, #00cec9);
+}
+
+.clear-btn {
+    background: linear-gradient(45deg, #e84393, #ff7675);
+}
+
+.delete-btn {
+    background: linear-gradient(45deg, #e17055, #fab1a0);
+}
+
+.view-btn {
+    background: linear-gradient(45deg, #0984e3, #74b9ff);
+}
+
+.view-content-btn, .view-encrypted-file-btn {
+    background: linear-gradient(45deg, #f1c40f, #f39c12); /* Yellow-orange gradient */
+}
+
+.add-btn:hover, .clear-btn:hover, .delete-btn:hover, .view-btn:hover, .view-content-btn:hover, .view-encrypted-file-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2), 0 0 15px currentColor;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .report-card {
+        overflow-x: auto;
+    }
+
+    .report-card table {
+        min-width: 900px; /* Ensure table has a minimum width for scrolling */
+    }
+
+    .report-card th,
+    .report-card td {
+        padding: 12px 15px;
+        font-size: 12px;
+    }
+
+    .report-card td button {
+        padding: 8px 10px;
+        font-size: 10px;
+        min-width: 100px; /* Slightly smaller buttons on mobile */
+    }
+}
+/* Document Viewer */
+.document-card {
+    padding: 35px;
+}
+
+#docPreview {
+    height: 75vh;
+    border-radius: 20px;
+    border: 4px solid #2ecc71;
+    transition: all 0.4s ease;
+    margin-top: 20px;
+}
+
+.document-card:hover #docPreview {
+    transform: scale(1.02);
+    border-color: #00b894;
+}
+
+/* Enhanced Dropdown */
+.dropdown-container {
+    position: relative;
+    margin: 25px 0;
+}
+
+.dropdown-btn {
+    background: linear-gradient(45deg, #6c5ce7, #a29bfe);
+    padding: 16px 25px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(108, 92, 231, 0.4);
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dropdown-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(108, 92, 231, 0.5);
+}
+
+.dropdown-menu {
+    background: linear-gradient(135deg, rgba(108, 92, 231, 0.95), rgba(162, 155, 254, 0.95));
+    border-radius: 15px;
+    transform-origin: top center;
+    position: absolute;
+    width: 100%;
+    z-index: 10;
+    opacity: 0;
+    visibility: hidden;
+    transform: scaleY(0);
+    transition: all 0.3s ease;
+}
+
+.dropdown-menu.active {
+    opacity: 1;
+    visibility: visible;
+    transform: scaleY(1);
+    animation: bounceIn 0.5s ease forwards;
+}
+
+@keyframes bounceIn {
+    0% { transform: scaleY(0); opacity: 0; }
+    60% { transform: scaleY(1.1); opacity: 1; }
+    100% { transform: scaleY(1); opacity: 1; }
+}
+
+.dropdown-menu li {
+    padding: 16px 25px;
+    color: white;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.dropdown-menu li:hover {
+    transform: translateX(5px);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Enhanced Logout Button with Cool Effects */
+.logout-btn {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    padding: 14px 30px;
+    background: linear-gradient(45deg, #ff6b6b, #ff8787);
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    overflow: hidden;
+    z-index: 100;
+}
+
+/* Neon Glow Effect */
+.logout-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 30px rgba(255, 107, 107, 0.6), 0 0 20px rgba(255, 107, 107, 0.5);
+    background: linear-gradient(45deg, #ff8787, #ff6b6b);
+}
+
+/* Ripple Effect */
+.logout-btn::before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+}
+
+.logout-btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* SVG Animation */
+.logout-btn svg {
+    width: 24px;
+    height: 24px;
+    fill: none;
+    stroke: white;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.4s ease;
+}
+
+.logout-btn:hover svg {
+    transform: rotate(90deg) translateX(5px);
+}
+
+/* Pulse Animation */
+.logout-btn span {
+    position: relative;
+    z-index: 1;
+}
+
+.logout-btn::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    animation: pulseGlow 4s infinite;
+    z-index: 0;
+    pointer-events: none;
+}
+
+@keyframes pulseGlow {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+    body {
+        padding: 15px 0;
+    }
+
+    .card {
+        width: 100%;
+        margin: 25px 0;
+        padding: 25px;
+    }
+
+    .profile-card img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .info-card img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .report-card table {
+        display: block;
+        overflow-x: auto;
+        border-spacing: 0 10px;
+    }
+
+    #docPreview {
+        height: 60vh;
+    }
+
+    .logout-btn {
+        top: 15px;
+        right: 15px;
+        padding: 12px 25px;
+        font-size: 14px;
+    }
+
+    .logout-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* Smooth Scroll */
+html {
+    scroll-behavior: smooth;
+}
