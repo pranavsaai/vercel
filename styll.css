@@ -6,61 +6,56 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(120deg, #1e272e 0%, #2f3542 100%);
+    background: linear-gradient(135deg, #1e272e 0%, #2f3542 100%);
     color: #dfe6e9;
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
     overflow-x: hidden;
-    position: relative;
-    padding: 20px 0;
 }
 
 body::before {
     content: '';
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at 30% 30%, rgba(46, 204, 113, 0.1) 0%, transparent 70%);
-    animation: pulse 15s infinite;
+    background: radial-gradient(circle at 20% 20%, rgba(46, 204, 113, 0.15) 0%, transparent 80%);
     z-index: -1;
+    animation: subtlePulse 20s infinite ease-in-out;
 }
 
-@keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: 0.5; }
-    50% { transform: scale(1.2); opacity: 0.8; }
+@keyframes subtlePulse {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.05); }
 }
 
+/* Full-page layout with sections */
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 30px 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Card Styling for Sections */
 .card {
-    width: 94%;
-    max-width: 1300px;
-    margin: 40px auto;
-    padding: 35px;
-    border-radius: 25px;
     background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
     overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
-
-/* Ultra Smooth Cards */
-.card {
-    width: 94%;
-    max-width: 1300px;
-    margin: 40px auto;
-    padding: 35px;
-    border-radius: 25px;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    position: relative;
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
 
 .card::before {
     content: '';
@@ -69,53 +64,49 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(45deg, rgba(46, 204, 113, 0.2), rgba(52, 152, 219, 0.2));
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(52, 152, 219, 0.1));
+    opacity: 0.5;
     z-index: -1;
-    border-radius: 25px; /* Match the card's border-radius */
+    border-radius: 20px;
 }
 
-.card:hover::before {
-    opacity: 1;
-}
-
+/* Subtle hover effect */
 .card:hover {
-    transform: translateY(-10px) scale(1.03);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), 0 0 20px rgba(46, 204, 113, 0.2);
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
 }
-.report-card {
-    overflow-x: auto; 
-}
+
 /* Profile Card */
 .profile-card {
-    background: linear-gradient(135deg, #2ecc71 0%, #3498db 100%);
-    padding: 45px;
+    background: linear-gradient(135deg, #2ecc71 20%, #3498db 80%);
     color: white;
-    animation: float 6s ease-in-out infinite;
+    text-align: center;
+    padding: 50px;
+    animation: gentleFloat 8s ease-in-out infinite;
 }
 
-@keyframes float {
+@keyframes gentleFloat {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
+    50% { transform: translateY(-10px); }
 }
 
-.profile-card img {
-    width: 130px;
-    height: 130px;
+.profile-card svg {
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
-    border: 5px solid rgba(255, 255, 255, 0.95);
-    transition: all 0.4s ease;
+    border: 4px solid rgba(255, 255, 255, 0.9);
     margin-bottom: 20px;
+    transition: transform 0.3s ease;
 }
 
-.profile-card img:hover {
-    transform: scale(1.15) rotate(5deg);
-    box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
+.profile-card svg:hover {
+    transform: scale(1.1);
 }
 
 .profile-card h2 {
-    margin: 15px 0;
+    font-size: 2rem;
+    margin: 10px 0;
+    font-weight: 600;
 }
 
 /* Info Card */
@@ -125,257 +116,170 @@ body::before {
     padding: 40px;
 }
 
-.info-card img {
+.info-card svg {
     width: 80px;
     height: 80px;
-    border-radius: 15px;
     margin: 20px auto;
-    transition: all 0.4s ease;
+    transition: transform 0.3s ease;
 }
 
-.info-card img:hover {
-    transform: scale(1.1);
+.info-card svg:hover {
+    transform: scale(1.05);
+}
+
+.info-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
 }
 
 .info-card p {
-    margin-top: 15px;
+    font-size: 1.1rem;
 }
 
-/* Buttons */
-.add-btn, .clear-btn, .delete-btn, .view-btn {
-    padding: 14px 28px;
-    border: none;
-    border-radius: 50px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.4s ease;
-    background: linear-gradient(45deg, #00b894, #00cec9);
-    color: white;
-    margin: 10px 5px;
-}
-
-.clear-btn { background: linear-gradient(45deg, #e84393, #ff7675); }
-.delete-btn { background: linear-gradient(45deg, #e17055, #fab1a0); }
-.view-btn { background: linear-gradient(45deg, #0984e3, #74b9ff); }
-.view-content-btn, .view-encrypted-file-btn {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 50px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.4s ease;
-    background: linear-gradient(45deg, #f1c40f, #f39c12); /* Yellow-orange gradient */
-    color: white;
-    margin: 5px;
-}
-
-.view-content-btn:hover, .view-encrypted-file-btn:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2), 0 0 15px rgba(241, 196, 15, 0.5);
-}
-.add-btn:hover, .clear-btn:hover, .delete-btn:hover, .view-btn:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2), 0 0 15px currentColor;
-}
-
-/* Table */
+/* Report Card */
 .report-card {
-    overflow-x: auto; 
+    flex-grow: 1;
+    padding: 40px;
+    overflow-x: auto;
+}
+
+.report-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
 }
 
 .report-card table {
     width: 100%;
     border-collapse: separate;
-    border-spacing: 0 15px;
-    margin-top: 25px;
-    table-layout: auto; 
-    display: table;
-}
-
-.report-card thead,
-.report-card tbody {
-    display: table;
-    width: 100%;
-    table-layout: auto; 
+    border-spacing: 0 10px;
+    table-layout: auto;
 }
 
 .report-card th {
-    background: linear-gradient(45deg, #2d3436, #636e72);
-    padding: 18px 25px;
-    font-size: 14px;
+    background: linear-gradient(90deg, #2d3436, #636e72);
+    padding: 15px 20px;
+    font-size: 0.9rem;
     text-align: left;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     color: #dfe6e9;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .report-card td {
-    padding: 18px 25px;
-    background: rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
-    font-size: 14px;
+    padding: 15px 20px;
+    background: rgba(255, 255, 255, 0.08);
+    font-size: 0.95rem;
     text-align: left;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    transition: background 0.3s ease;
 }
 
-/* Tooltip for long project titles */
-.report-card td:nth-child(4) {
-    position: relative;
-}
-
-.report-card td:nth-child(4):hover::after {
-    content: attr(data-title);
-    position: absolute;
-    background: #333;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-    z-index: 10;
-    white-space: normal;
-    left: 0;
-    top: -40px;
-}
-
-/* Ensure buttons in cells don’t wrap and have enough space */
-.report-card td button {
-    white-space: nowrap;
-    padding: 10px 15px;
-    font-size: 12px;
-    min-width: 120px; 
-    text-align: center;
-}
-
-/* Hover effect for table rows */
 .report-card tbody tr:hover {
-    transform: translateX(10px);
-    background: rgba(46, 204, 113, 0.15);
-    box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+    background: rgba(46, 204, 113, 0.1);
 }
 
-/* Buttons */
-.add-btn, .clear-btn, .delete-btn, .view-btn, .view-content-btn, .view-encrypted-file-btn {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 50px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.4s ease;
-    color: white;
-    margin: 5px;
-}
-
-.add-btn {
-    background: linear-gradient(45deg, #00b894, #00cec9);
-}
-
-.clear-btn {
-    background: linear-gradient(45deg, #e84393, #ff7675);
-}
-
-.delete-btn {
-    background: linear-gradient(45deg, #e17055, #fab1a0);
-}
-
-.view-btn {
-    background: linear-gradient(45deg, #0984e3, #74b9ff);
-}
-
-.view-content-btn, .view-encrypted-file-btn {
-    background: linear-gradient(45deg, #f1c40f, #f39c12); /* Yellow-orange gradient */
-}
-
-.add-btn:hover, .clear-btn:hover, .delete-btn:hover, .view-btn:hover, .view-content-btn:hover, .view-encrypted-file-btn:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2), 0 0 15px currentColor;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .report-card {
-        overflow-x: auto;
-    }
-
-    .report-card table {
-        min-width: 900px; /* Ensure table has a minimum width for scrolling */
-    }
-
-    .report-card th,
-    .report-card td {
-        padding: 12px 15px;
-        font-size: 12px;
-    }
-
-    .report-card td button {
-        padding: 8px 10px;
-        font-size: 10px;
-        min-width: 100px; /* Slightly smaller buttons on mobile */
-    }
-}
-/* Document Viewer */
+/* Document Card */
 .document-card {
-    padding: 35px;
+    padding: 40px;
+}
+
+.document-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 #docPreview {
-    height: 75vh;
-    border-radius: 20px;
-    border: 4px solid #2ecc71;
-    transition: all 0.4s ease;
-    margin-top: 20px;
+    height: 70vh;
+    border-radius: 15px;
+    border: 3px solid #2ecc71;
+    transition: border-color 0.3s ease;
+    width: 100%;
 }
 
 .document-card:hover #docPreview {
-    transform: scale(1.02);
     border-color: #00b894;
 }
 
-/* Enhanced Dropdown */
-.dropdown-container {
+/* Buttons */
+.add-btn, .dropdown-btn, .close-btn, .view-btn, .view-encrypted-file-btn, .delete-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 30px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     position: relative;
-    margin: 25px 0;
+    overflow: hidden;
+}
+
+.add-btn {
+    background: linear-gradient(90deg, #00b894, #00cec9);
 }
 
 .dropdown-btn {
-    background: linear-gradient(45deg, #6c5ce7, #a29bfe);
-    padding: 16px 25px;
-    border-radius: 15px;
-    box-shadow: 0 8px 20px rgba(108, 92, 231, 0.4);
+    background: linear-gradient(90deg, #6c5ce7, #a29bfe);
     width: 100%;
     text-align: left;
-    cursor: pointer;
-    transition: all 0.3s ease;
 }
 
-.dropdown-btn:hover {
+.close-btn {
+    background: linear-gradient(90deg, #ff6b6b, #ff8787);
+    padding: 8px 15px;
+    font-size: 1rem;
+}
+
+/* New Button Styles for Table Actions */
+.view-btn {
+    background: linear-gradient(90deg, #0984e3, #74b9ff); /* Blue gradient for View Report */
+}
+
+.view-encrypted-file-btn {
+    background: linear-gradient(90deg, #f1c40f, #f39c12); /* Yellow-orange gradient for View Encrypted File */
+}
+
+.delete-btn {
+    background: linear-gradient(90deg, #e17055, #fab1a0); /* Red-orange gradient for Delete */
+}
+
+.add-btn:hover, .dropdown-btn:hover, .close-btn:hover, .view-btn:hover, .view-encrypted-file-btn:hover, .delete-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(108, 92, 231, 0.5);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Button Icons */
+.view-btn svg, .view-encrypted-file-btn svg, .delete-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Dropdown */
+.dropdown-container {
+    position: relative;
+    margin: 20px 0;
 }
 
 .dropdown-menu {
-    background: linear-gradient(135deg, rgba(108, 92, 231, 0.95), rgba(162, 155, 254, 0.95));
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe);
     border-radius: 15px;
-    transform-origin: top center;
     position: absolute;
     width: 100%;
     z-index: 10;
     opacity: 0;
     visibility: hidden;
     transform: scaleY(0);
+    transform-origin: top;
     transition: all 0.3s ease;
 }
 
@@ -383,153 +287,101 @@ body::before {
     opacity: 1;
     visibility: visible;
     transform: scaleY(1);
-    animation: bounceIn 0.5s ease forwards;
-}
-
-@keyframes bounceIn {
-    0% { transform: scaleY(0); opacity: 0; }
-    60% { transform: scaleY(1.1); opacity: 1; }
-    100% { transform: scaleY(1); opacity: 1; }
 }
 
 .dropdown-menu li {
-    padding: 16px 25px;
+    padding: 12px 20px;
     color: white;
-    transition: all 0.3s ease;
     cursor: pointer;
+    transition: background 0.3s ease;
 }
 
 .dropdown-menu li:hover {
-    transform: translateX(5px);
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.15);
 }
 
-/* Enhanced Logout Button with Cool Effects */
+/* Logout Button */
 .logout-btn {
     position: fixed;
-    top: 25px;
-    right: 25px;
-    padding: 14px 30px;
-    background: linear-gradient(45deg, #ff6b6b, #ff8787);
+    top: 20px;
+    right: 20px;
+    padding: 12px 25px;
+    background: linear-gradient(90deg, #ff6b6b, #ff8787);
     border: none;
-    border-radius: 50px;
+    border-radius: 30px;
     color: white;
-    font-weight: 700;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
-    cursor: pointer;
+    letter-spacing: 1px;
     display: flex;
     align-items: center;
-    gap: 10px;
-    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    overflow: hidden;
+    gap: 8px;
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     z-index: 100;
 }
 
-/* Neon Glow Effect */
 .logout-btn:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 12px 30px rgba(255, 107, 107, 0.6), 0 0 20px rgba(255, 107, 107, 0.5);
-    background: linear-gradient(45deg, #ff8787, #ff6b6b);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 107, 107, 0.5);
 }
 
-/* Ripple Effect */
-.logout-btn::before {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 0;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.6s ease, height 0.6s ease;
-}
-
-.logout-btn:hover::before {
-    width: 300px;
-    height: 300px;
-}
-
-/* SVG Animation */
 .logout-btn svg {
     width: 24px;
     height: 24px;
-    fill: none;
-    stroke: white;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    transition: transform 0.4s ease;
+    transition: transform 0.3s ease;
 }
 
 .logout-btn:hover svg {
-    transform: rotate(90deg) translateX(5px);
+    transform: translateX(5px);
 }
 
-/* Pulse Animation */
-.logout-btn span {
-    position: relative;
-    z-index: 1;
-}
-
-.logout-btn::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-    animation: pulseGlow 4s infinite;
-    z-index: 0;
-    pointer-events: none;
-}
-
-@keyframes pulseGlow {
-    0%, 100% { transform: scale(1); opacity: 0.5; }
-    50% { transform: scale(1.1); opacity: 0.8; }
-}
-
-/* Mobile Optimization */
+/* Responsive Design */
 @media (max-width: 768px) {
-    body {
-        padding: 15px 0;
+    main {
+        padding: 20px 15px;
+        gap: 20px;
     }
 
     .card {
-        width: 100%;
-        margin: 25px 0;
         padding: 25px;
     }
 
-    .profile-card img {
+    .profile-card svg {
         width: 100px;
         height: 100px;
     }
 
-    .info-card img {
+    .info-card svg {
         width: 60px;
         height: 60px;
     }
 
-    .report-card table {
-        display: block;
+    .report-card {
         overflow-x: auto;
-        border-spacing: 0 10px;
+    }
+
+    .report-card table {
+        min-width: 800px;
+    }
+
+    .report-card td {
+        padding: 10px 15px;
+    }
+
+    .add-btn, .view-btn, .view-encrypted-btn, .delete-btn {
+        padding: 8px 15px;
+        font-size: 0.85rem;
     }
 
     #docPreview {
-        height: 60vh;
+        height: 50vh;
     }
 
     .logout-btn {
         top: 15px;
         right: 15px;
-        padding: 12px 25px;
-        font-size: 14px;
+        padding: 10px 20px;
     }
 
     .logout-btn svg {
