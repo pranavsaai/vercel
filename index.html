@@ -11,66 +11,233 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
-
 </head>
-<body>  
+<body>
     <button id="logoutBtn" class="logout-btn">
         <span>Logout</span>
-        <svg viewBox="0 0 24 24">
-            <path d="M16 17l5-5m0 0l-5-5m5 5H9m4-8a9 9 0 1 0 0 18"></path>
+        <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <image href="https://cdn-icons-png.flaticon.com/512/8765/8765708.png" width="24" height="24" />
         </svg>
     </button>
 
-    <section class="card profile-card">
-        <img src="c:\Users\PRANAV SAI\Downloads\th.jpg" alt="Student Profile">
-        <h2>Unified Project Portal</h2>
-        <h2 id="welcomeMessage"></h2>
-    </section>
+    <main>
+        <section class="card profile-card">
+            <!-- New 3D Main Logo -->
+            <svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                <image href="https://img.icons8.com/3d-fluency/94/graduation-cap.png" width="120" height="120" />
+            </svg>
+            <h2>Unified Project Portal</h2>
+            <h2 id="welcomeMessage"></h2>
+        </section>
 
-    <section class="card info-card">
-        <h3>Available Projects</h3>
-        <img src="C:\Users\PRANAV SAI\Downloads\analytics_1814100.png" 
-     alt="Projects Icon" class="project-image">
-        <p>You have <strong id="project-count">0 active projects</strong></p>
-    </section>
+        <section class="card info-card">
+            <h3>Available Projects</h3>
+            <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                <image href="https://img.icons8.com/3d-fluency/94/project.png" width="80" height="80" />
+            </svg>
+            <p>You have <strong id="project-count">0 active projects</strong></p>
+        </section>
 
-     <section class="card report-card">
-        <h3>Project Reports</h3>
-        <button class="add-btn" onclick="document.getElementById('fileInput').click()">Add Project</button>
-        <input type="file" id="fileInput" style="display: none;" accept=".pdf,.docx,.html,.js,.xml,.txt" onchange="addProject()">
-        <div class="dropdown-container">
-            <button class="dropdown-btn">Choose Encryption Method ▼</button>
-            <ul class="dropdown-menu">
-                <li data-value="aes">AES</li>
-                <li data-value="triple_des">Triple DES</li>
-                <li data-value="rc4">RC4</li>
-                <li data-value="sha256">SHA-256</li>
-                <li data-value="base64">Base64</li>
-            </ul>
-        </div>
-        <input type="hidden" id="encryptionMethod">
-          
-        <table>
-            <thead>
-                <tr>
-                    <th>Project ID</th>
-                    <th>Submission Date</th>
-                    <th>Project Title</th>
-                    <th>Encrypted File</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody id="projectTable">
-            </tbody>
-        </table>
-    </section>
+        <section class="card report-card">
+            <h3>Project Reports</h3>
+            <button class="add-btn" onclick="document.getElementById('fileInput').click()">Add Project</button>
+            <input type="file" id="fileInput" style="display: none;" accept=".pdf,.docx,.html,.js,.xml,.txt" onchange="addProject()">
+            <div class="dropdown-container">
+                <button class="dropdown-btn">Choose Encryption Method ▼</button>
+                <ul class="dropdown-menu">
+                    <li data-value="aes">AES</li>
+                    <li data-value="triple_des">Triple DES</li>
+                    <li data-value="rc4">RC4</li>
+                    <li data-value="sha256">SHA-256</li>
+                    <li data-value="base64">Base64</li>
+                </ul>
+            </div>
+            <input type="hidden" id="encryptionMethod">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Project ID</th>
+                        <th>Submission Date</th>
+                        <th>Project Title</th>
+                        <th>Project Content</th>
+                        <th>Encrypted File</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="projectTable">
+                    <tr>
+                        <td>M1-9738</td>
+                        <td>March 26, 2025</td>
+                        <td>4e82a4e47669a74125591d607d2137dacc0307cebf055678e32b513d4ea080b</td>
+                        <td>Encrypted File</td>
+                        <td>
+                            <button class="view-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <image href="https://cdn-icons-png.flaticon.com/512/709/709612.png" width="16" height="16" />
+                                </svg>
+                                View Report
+                            </button>
+                            <button class="view-encrypted-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <image href="https://cdn-icons-png.flaticon.com/512/3917/3917032.png" width="16" height="16" />
+                                </svg>
+                                View Encrypted File
+                            </button>
+                            <button class="delete-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <image href="https://cdn-icons-png.flaticon.com/512/1214/1214428.png" width="16" height="16" />
+                                </svg>
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>M2-3583</td>
+                        <td>March 26, 2025</td>
+                        <td>U2FsdGVkX184FzWAYsVNo4Y2R/YdX4Yb6eBtkGk=</td>
+                        <td>Encrypted File</td>
+                        <td>
+                            <button class="view-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <image href="https://cdn-icons-png.flaticon.com/512/709/709612.png" width="16" height="16" />
+                                </svg>
+                                View Report
+                            </button>
+                            <button class="view-encrypted-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <image href="https://cdn-icons-png.flaticon.com/512/3917/3917032.png" width="16" height="16" />
+                                </svg>
+                                View Encrypted File
+                            </button>
+                            <button class="delete-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <image href="https://cdn-icons-png.flaticon.com/512/1214/1214428.png" width="16" height="16" />
+                                </svg>
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>P1-8167</td>
+                        <td>March 28, 2025</td>
+                        <td>SUIULV0gSW50XJULREyY2XchmF0aW9uLnBkZg==</td>
+                        <td>Encrypted File</td>
+                        <td>
+                            <button class="view-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <image href="https://cdn-icons-png.flaticon.com/512/709/709612.png" width="16" height="16" />
+                                </svg>
+                                View Report
+                            </button>
+                            <button class="view-encrypted-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <image href="https://cdn-icons-png.flaticon.com/512/3917/3917032.png" width="16" height="16" />
+                                </svg>
+                                View Encrypted File
+                            </button>
+                            <button class="delete-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <image href="https://cdn-icons-png.flaticon.com/512/1214/1214428.png" width="16" height="16" />
+                                </svg>
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>P1-9787</td>
+                        <td>March 26, 2025</td>
+                        <td>9dc98a3c39a1bf888a2c02084ec36a615173a03b41a77161894140ec14c36ec</td>
+                        <td>Encrypted File</td>
+                        <td>
+                            <button class="view-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <image href="https://cdn-icons-png.flaticon.com/512/709/709612.png" width="16" height="16" />
+                                </svg>
+                                View Report
+                            </button>
+                            <button class="view-encrypted-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <image href="https://cdn-icons-png.flaticon.com/512/3917/3917032.png" width="16" height="16" />
+                                </svg>
+                                View Encrypted File
+                            </button>
+                            <button class="delete-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <image href="https://cdn-icons-png.flaticon.com/512/1214/1214428.png" width="16" height="16" />
+                                </svg>
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>T1-5965</td>
+                        <td>March 26, 2025</td>
+                        <td>U2FsdGVkX1/AW1sK5Y2fTYPEPiR1ZdAdWFMDfN2D9gtZTR+CYc=</td>
+                        <td>Encrypted File</td>
+                        <td>
+                            <button class="view-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <image href="https://cdn-icons-png.flaticon.com/512/709/709612.png" width="16" height="16" />
+                                </svg>
+                                View Report
+                            </button>
+                            <button class="view-encrypted-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <image href="https://cdn-icons-png.flaticon.com/512/3917/3917032.png" width="16" height="16" />
+                                </svg>
+                                View Encrypted File
+                            </button>
+                            <button class="delete-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <image href="https://cdn-icons-png.flaticon.com/512/1214/1214428.png" width="16" height="16" />
+                                </svg>
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>T2-8932</td>
+                        <td>March 26, 2025</td>
+                        <td>f13d3e3bef491d383f312b56cbf0d511a82b3b179dbcd22fe8422710ed</td>
+                        <td>Encrypted File</td>
+                        <td>
+                            <button class="view-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <image href="https://cdn-icons-png.flaticon.com/512/709/709612.png" width="16" height="16" />
+                                </svg>
+                                View Report
+                            </button>
+                            <button class="view-encrypted-file-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <image href="https://cdn-icons-png.flaticon.com/512/3917/3917032.png" width="16" height="16" />
+                                </svg>
+                                View Encrypted File
+                            </button>
+                            <button class="delete-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <image href="https://cdn-icons-png.flaticon.com/512/1214/1214428.png" width="16" height="16" />
+                                </svg>
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
 
-    <section class="card document-card">
-        <h3>Project Preview 
-            <button id="closePreview" class="close-btn">&times;</button>
-        </h3>
-        <iframe id="docPreview" src="" width="100%" height="400px"></iframe>
-    </section>
+        <section class="card document-card">
+            <h3>
+                Project Preview
+                <button id="closePreview" class="close-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <image href="https://img.icons8.com/3d-fluency/94/cancel.png" width="24" height="24" />
+                    </svg>
+                </button>
+            </h3>
+            <iframe id="docPreview" src="" frameborder="0"></iframe>
+        </section>
+    </main>
+
     <script src="scripts.js" defer></script>
 </body>
 </html>
